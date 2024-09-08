@@ -1,0 +1,41 @@
+My man page expirement for Virtual Box docs.
+The pain with the VB man pages was knowing which page I needed.
+So I generated each help page into a single file that I can open with vi.
+
+Ctl -w (release)
+  w cycle through windows left to right
+  h left a window
+  l right
+  j down
+  k up
+
+Here's the awk command I used to generate the files:
+vboxmanage |awk '/^[[:blank:]]+VBoxManage [[:alnum:]]/ {print $1, "--help", $2, ">", $2".man"}' |awk '!seen[$0]++' |zsh
+
+The function to call this is
+  function vbman() {
+    vi -u ~/vbman/.vbmanrc ~/vbman/${1}.man
+     }
+
+The files are in vbman folder in my home dir.
+I have a config file specific to this in .vbmanrc
+
+  set expandtab
+  set tabstop=2
+  set shiftwidth=2
+
+  " Word Wrap Stuff:
+  "=================
+  set linebreak
+  set breakindent
+
+  " NERDTree stuff
+  " ==============
+  " Start NERDTree and leave the cursor in opened file.
+  autocmd VimEnter * NERDTree ~/vbman |wincmd p
+
+  " Exit Vim if NERDTree is the only window remaining in the only tab.
+  autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+
+  "hides ^G characters in the folder explorer column
+  let g:NERDTreeNodeDelimiter = "\u00a0"
