@@ -1,0 +1,16 @@
+Run compose workloads via an external provider such as docker-compose or podman-compose
+
+Description:
+  This command is a thin wrapper around an external compose provider such as docker-compose or podman-compose.  This means that podman compose is executing another tool that implements the compose functionality but sets up the environment in a way to let the compose provider communicate transparently with the local Podman socket.  The specified options as well the command and argument are passed directly to the compose provider.
+
+The default compose providers are docker-compose and podman-compose.  If installed, docker-compose takes precedence since it is the original implementation of the Compose specification and is widely used on the supported platforms (i.e., Linux, Mac OS, Windows).
+
+If you want to change the default behavior or have a custom installation path for your provider of choice, please change the compose_provider field in containers.conf(5).  You may also set PODMAN_COMPOSE_PROVIDER environment variable.
+
+Usage:
+  podman compose [options]
+
+Examples:
+  podman compose -f nginx.yaml up --detach
+  podman --log-level=debug compose -f many-images.yaml pull
+

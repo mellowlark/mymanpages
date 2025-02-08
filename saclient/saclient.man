@@ -1,0 +1,37 @@
+COMMAND SYNTAX
+	appscan <command> [options]
+ADDITIONAL COMMAND HELP
+	appscan help <command>
+
+DESCRIPTION
+	Command-line interface for Static Analyzer. 
+
+GLOBAL COMMANDS
+	update               Check for and apply Static Analyzer updates.                                    
+	checkUpdate          Check if an update is available.                                                
+	version              Display the Static Analyzer version.                                            
+	help                 Display available Static Analyzer commands.                                     
+
+REPORT COMMANDS
+	get_report           Retrieves a specific report type for a given scan or application ID.            
+
+RESULTS COMMANDS
+	get_result           Retrieves the results from the analysis service.                                
+
+CONFIGURATION COMMANDS
+	prepare              Generate an IRX file.                                                           
+	package              Package an assessment (.ozasmt) file into an IRX file.                          
+	get_pubkey           Retrieves the service's active public key and saves it here: <client_utility>/config/rsa.pub 
+This key can be used to encrypt data for transmission to the service.
+	prepare_sca          Generate an IRX file for Software Composition Analysis (SCA).                   
+
+AUTHENTICATION COMMANDS
+	api_login            Authenticate to the service using an API key.                                   
+
+ANALYSIS COMMANDS
+	cancel               Cancel a queued or running analysis job.                                        
+	list                 List queued, running, and completed analysis jobs (maximum of 2,000 scans returned).
+	list_apps            List applications                                                               
+	queue_analysis       Submit an IRX file in the current directory for analysis in the cloud.          
+	status               Display the status of an analysis job.                                          
+	info                 Display the information of an analysis job.                                     

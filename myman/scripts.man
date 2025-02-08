@@ -1,0 +1,12 @@
+# Script snippets I keep forgetting
+
+if else:
+-eq is for numbers
+quote the values
+if [[ 10 + 2 -eq 12 ]]; then
+  echo yes
+elif [[ 4 + 3 -eq 7 ]]; then
+  echo seven
+else
+  echo "something else"
+fi

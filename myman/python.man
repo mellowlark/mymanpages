@@ -1,0 +1,8 @@
+Debugging:
+ s(tep) stop at next possible occasion
+ n(ext) stop at next line in current function or when it returns
+ r(eturn) continue until current function returns
+ c(ont(inue)) continue to next breakpoint or to end.
+ l(ist) & ll list and list long surrounding source code.
+ a(rgs) print args of current function
+ b(reak)  line # current file filename:line # named file

@@ -1,0 +1,20 @@
+ --- Adding Files to GitHub after creating a new repository ---
+ cd to local folder (should have same name as the new repository)
+ 
+   echo "# <repository name>" >> README.md
+   git init
+   git add README.md
+   git commit -m "first commit"
+   git branch -M main
+   git remote add origin https://github.com/mellowlark/repository-name.git
+   git push -u origin main
+ 
+ If the folder already contains the project files:
+ 
+   echo "# <repository name>" >> README.md
+   git init
+   git add *
+   git commit -m "first commit"
+   git branch -M main
+   git remote add origin https://github.com/mellowlark/repository-name.git
+   git push -u origin main
