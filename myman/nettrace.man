@@ -1,3 +1,0 @@
-tcpdump 
-https://www.ibm.com/support/pages/how-use-tcpdump-utility-troubleshoot-network-issues
-tcpdump -i 1 -s 0 -w test.pcap

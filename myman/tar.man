@@ -1,3 +1,0 @@
-# create tar without directories ising the -C option (-C = chdir)
-tar -c -z -f$1.tgz -C $1/ $1.crt $1.key -C ../stuff/ ca.crt
-Note -C works for extract as well
