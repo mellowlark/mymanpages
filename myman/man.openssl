@@ -1,0 +1,8 @@
+
+generate self signed cert\key pair
+mkdir certs
+domain=your.reistry.domain
+openssl req -newkey rsa:4096 -nodes -sha256 -addext "subjectAltName = DNS:${domain}" -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt -subj "/C=US/ST=MA/CN=${domain}" 
+
+get cert info
+openssl x509 -text -noout -in cert.crt

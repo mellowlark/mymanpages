@@ -1,0 +1,41 @@
+My URLs
+ https://github.com/mellowlark & /karlskorner
+ https://gitlab.com/karlskorner
+ https://bitbucket/unsure
+ 
+Repositories
+ /karlskorner/as360setup.git
+ ------
+ /mellowlark/myman.git
+
+--- Adding Files to GitHub after creating a new repository ---
+cd to local folder (should have same name as the new repository)
+ 
+   echo "# <repository name>" >> README.md
+   git init
+   git add README.md
+   git commit -m "first commit"
+   git branch -M main
+   git remote add origin https://github.com/mellowlark/repository-name.git
+   git push -u origin main
+ 
+If the folder already contains the project files:
+ 
+   echo "# <repository name>" >> README.md
+   git init
+   git add *
+   git commit -m "first commit"
+   git branch -M main
+   git remote add origin https://github.com/mellowlark/repository-name.git
+   git push -u origin main
+
+Making updates
+  
+  adding new files
+  git add *
+  commit (both after add and just changes)
+  commit -m "comment"
+
+#files to pull down from git
+curl -o .bash_aliases https://raw.githubusercontent.com/mellowlark/snippets/refs/heads/master/aliases/bash_aliases && . ~/.bashrc
+curl -o installAll.sh https://raw.githubusercontent.com/mellowlark/k8s/refs/heads/main/installAll.sh && chmod +x installAll.sh

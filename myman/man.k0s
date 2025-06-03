@@ -1,0 +1,41 @@
+First Steps:
+sudo k0s install controller --single
+sudo k0s start # wait a minute or two.
+sudo k0s kubectl get nodes
+to enable using kubectl directly generate kubeconfig file
+sudo k0s kubeconfig admin > .kube/config
+Create a new user:
+sudo k0s kubectl create clusterrolebinding [binding-name] --clusterrole=cluster-admin --user=[username]
+sudo k0s kubeconfig create [username] --group system:masters >.kube/config 
+
+
+Service:
+
+systemctl stop k0scontroller
+
+https://docs.k0sproject.io/stable/install/
+#install as a single worker\control node
+sudo k0s install controller --single
+
+#The system service can be reinstalled with the --force flag:
+sudo k0s install controller --single --force
+sudo systemctl daemon-reload
+
+#Start the service
+sudo k0s start
+
+#Check status
+sudo k0s status
+
+#Verify
+sudo k0s kubectl get nodes
+
+#Remove
+sudo k0s reset
+#Restart the OS to finish removal.
+
+#Get config file
+sudo k0s kubeconfig admin
+#create user and their own config file
+sudo k0s kubeconfig create admin-user --groups "system:masters" > admin-user.kubeconfig
+export KUBECONFIG=<path to config file> (~/.kube is the default and needs no EV)

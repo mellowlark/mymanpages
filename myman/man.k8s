@@ -1,0 +1,4 @@
+
+kubectl --insecure-skip-tls-verify 
+kubectl cluster-info [dump]
+

@@ -1,0 +1,4 @@
+getmac <list mac addresses>
+arp -a <list all ARP entries in the table>
+clip <redirects output to clipboard>
+systeminfo <gets system information>

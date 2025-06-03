@@ -1,0 +1,40 @@
+curl to list images in registry
+Use sed to format image names
+curl -k -u username:password https://eden.kube.hcl/v2/_catalog |sed -E 's/\{\"repositories"\:\[|\]\}|,/\n/g'
+Use jq to format image names
+curl -k -u username:password https://eden.kube.hcl/v2/_catalog |jq .
+
+certs
+podman certs: /etc/containers/certs.d/eden.kube.hcl/ca.crt
+docker certs: /etc/docker/certs.d/eden.kube.hcl/ca.crt and client cert and key
+
+Unix
+To delete all containers including its volumes use,
+  docker rm -vf $(docker ps -aq)
+To delete all the images,
+  docker rmi -f $(docker images -aq)
+Remember, you should remove all the containers before removing all the images from which those containers were created.
+
+Windows - Powershell
+docker images -a -q | % { docker image rm $_ -f }
+Windows - cmd.exe
+for /F %i in ('docker images -a -q') do docker rmi -f %i
+
+
+Gitlab:
+uild_job:
+  stage: build
+  script:
+    - set +e
+    - echo "Building the project..."
+    - ./build_script.sh  # This command might fail, but the job will continue
+    - set -e
+  allow_failure: true
+
+test_job:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - ./run_tests.sh || true  # This command can fail without stopping the job
+    - echo "Tests completed, check results manually"
+

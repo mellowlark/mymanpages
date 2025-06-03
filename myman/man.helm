@@ -1,0 +1,5 @@
+
+helm search repo ingress-nginx --versions
+helm list -A (lists helm deployments)
+helm uninstall||delete <deployment name> -n <namespace>
+

@@ -1,0 +1,15 @@
+find in jars:
+forfiles /S /M *.jar /C "cmd /c <path to>\jar.exe -tvf @file | findstr /C:"TheSearchString" && echo @path"
+
+strace
+strace -tt -T -f -v -o ./strace.out
+strace -o ./x.note -e trace=open,close,write,stat,exit,stat,access  -s 90 -tt -f 
+strace -o ./at.note -e trace=\!munmap,mprotect,mmap,futex,mmap2,read  -s 90 -tt -f 
+
+tcpdump
+tcpdump -w outfile.out -s 8000 -i interface <from ip addr>
+
+wmic process list
+wmic process where "name like '%java%'" get Caption, WorkingSetSize, CommandLine, ExecutablePath
+
+

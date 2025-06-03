@@ -1,0 +1,4 @@
+vbm = virtualboxmanage
+vbm list vms | runningvms 
+vbm start <vm-name> --type | gui | headless | separate (detatchable gui) |
+

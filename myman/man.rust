@@ -1,0 +1,10 @@
+
+initilize (create basic application framework)
+  cargo new app_name
+  cd app_name, edit main.rs
+
+build and test 
+  cargo build -- arguments if any
+
+release
+  cargo build --release (exe will be in target\release\name.exe)

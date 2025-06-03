@@ -1,0 +1,5 @@
+alias c='clear'
+alias h='history'
+alias hg='history |grep -i'
+alias edal='vi ~/.bash_aliases'
+alias sb='. ~/.bashrc'

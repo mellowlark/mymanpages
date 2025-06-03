@@ -1,0 +1,11 @@
+
+:set paste temporarily turn off auto-indentation
+set autoindent expandtab tabstop=2 shiftwidth=2 (in _vimrc on win)
+
+Multiline edit
+--------------
+CTL-V Linux CTL-Q Windows
+Select the lines with arrow keys
+Shift I for insert mode.
+First line will become active, edit that line and esc. The other selected lines should be auto populated.
+

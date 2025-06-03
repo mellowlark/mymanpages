@@ -1,0 +1,23 @@
+
+--list (-l) --all --running --online (-o) --verbose (-v)
+--export <Distro> <FileName>
+--install <Distro>
+--import <Distro> <InstallLocation> <FileName>
+--exec, -e <CommandLine>
+--distribution (-d) <Distro>
+--user, -u <UserName>
+--install [Distro] [Options...]
+--terminate, -t <Distro>
+--unregister <Distro>
+--set-default, -s <Distro>
+--manage <distro> --set-default-user <username>
+
+wsl.conf
+[boot]
+systemd=true
+[user]
+default=username
+
+setup files:
+curl -o ~/.bash_aliases https://raw.githubusercontent.com/mellowlark/snippets/refs/heads/master/aliases/bash_aliases
+curl -o installAll.sh https://raw.githubusercontent.com/karlskorner/as360setup/refs/heads/main/installAll.sh

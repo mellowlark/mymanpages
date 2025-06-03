@@ -1,0 +1,122 @@
+ Setting up a Linux VM from MyCloud
+ ----------------------------------
+ First Steps after provisioning
+ Add User
+ 
+ RedHat:
+ ------
+ useradd -G wheel kweinertrun passwd after creating the user.passwd kweinert
+ 
+ Set NOPASSWD to run sudo without a password.
+ sudo visudo%wheel  ALL=(ALL)   	NOPASSWD: ALLAdd existing user to wheel group >usermod -G wheel
+ Using sed:
+ sudo sed -i -e 's/^%wheel/# %wheel/' -e '/NOPASSWD/s/^#%wheel/%wheel/' /etc/sudoers
+ 
+ Note there are a couple new Red Hat clones available now that Centos is no longer in the game.Rocky Linux  Designed to be 100% bug-for-bug compatible with Red Hat Enterprise Linux  AlmaLinux binary compatible with RHELOracle Linux  Another  RedHat compatible OS (this one has wsl images available as well)
+ 
+ Ubuntu: 
+ -------
+ adduser kweinertusermod -aG sudo kweinertvisudo:%sudo   ALL=(ALL) NOPASSWD:ALL
+ Another Ubuntu option is  Xubuntu I've been using this version for local VMS. It uses the Xfce desktop by default instead of Gnome.This makes it a little more light weight but still has a desktop  when needed.Using an SSH Keyssh key for automatic login various terminals.
+ Create the key
+ From Windows Terminal with OpenSSH
+ >ssh-keygenCreates id_rsa & id_rsa.pub in the userhome/.ssh folderid_rsa is the private key and goes on the from host. On Windows it gets added to a storage area with ssh-add command.id_rsa.pub goes into authorized_keys file on each host you want to log into.On Linux the id_rsa and authorized_keys need to have -rw------- permissions (chmod 600)And the .ssh folder needs  drwx------. (chmod 700)If it is set incorrectly the login will silently switch to a password login.
+ Troubleshooting
+ Red Hat 
+ tail -f -n 50 /var/log/secure | grep sshd
+ Ubuntu
+ tail -f -n 50 /var/log/auth.log | grep 'sshd'
+ Error suggesting ssh file permissions: Authentication refused: bad ownership or modes for file /home/kweinert/.ssh/authorized_keys
+ Troubleshoot ssh from the client:
+ ssh -v  host (more Vs = more verbose output)
+ 
+ 
+ Registering a RedHat VM
+ -----------------------
+ Obtain the required account on RedHat (I forget how I think it is through an incident in SNOW)
+ Registration process:
+  Log into the system.[username@hostname~]$ sudo subscription-manager register[sudo] password for username:Registering to: subscription.rhsm.redhat.com:443/subscriptionUsername: subscription_name (Subscription credentials provided by the Support Lab team on the incident)Password:The system has been registered with ID: 59c3f606-e9a7-495c-afab-b82a5eaac887The registered system name is: COMP-4843-1[username@COMP-4843-1 ~]$sudo sudosubscription-manager attach --auto[sudo] password for username:Successfully attached a subscription for: Red Hat Middleware, Self-Support (NFR, Partner Only)
+ Deregistration process:
+ [username@COMP-4843-1 ~]$ sudo subscription-manager unregister[sudo] password for username:Unregistering from: subscription.rhsm.redhat.com:443/subscriptionSystem has been unregistered.[username@COMP-4843-1 ~]$ sudo subscription-manager cleanAll local data removedP-4843-1 ~]$ sudo subscription-manager register
+ removed
+ 
+ 
+ Adding the extra disk to Red Hat
+ --------------------------------
+ Using LVM (Add the new disk to the existing root partition)
+ lsblk
+   (sdb is the new disk)
+ 	NAME          MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+ 	sda             8:0    0   60G  0 disk
+ 	├─sda1          8:1    0    1G  0 part /boot
+ 	└─sda2          8:2    0   59G  0 part
+ 	├─rhel-root 253:0    0   37G  0 lvm  /
+ 	├─rhel-swap 253:1    0  3.9G  0 lvm  [SWAP]
+ 	└─rhel-home 253:2    0 18.1G  0 lvm  /home
+ 	sdb             8:16   0   50G  0 ????? <I forget what it showed here.
+ 	sr0            11:0    1 1024M  0 rom
+ 	G
+ sudo pvcreate /dev/sdb
+ 
+ sudo vgs
+   (get name of volume group (rhel on this system)
+ 	VG   #PV #LV #SN Attr   VSize   VFree
+ 	rhel   1   3   0 wz--n- <59.00g 4.00m
+ 
+ sudo vgextend rhel /dev/xvdc
+ 
+ sudo vgs 
+  (note the new size)
+ 
+ sudo vgdisplay
+  (note the Free size on /)
+ 
+ sudo lvs
+   (choose the correct logical volume (root))  
+ 	LV   VG   Attr       LSize
+ 	home rhel -wi-ao----  18.08g
+ 	root rhel -wi-ao---- <37.04g
+ 	swap rhel -wi-ao----  <3.88g
+ 	
+ sudo lvextend -l +100%FREE /dev/rhel/root
+   (extend the LV)
+ 
+ sudo xfs_growfs /dev/rhel/root
+ 	(use the extra space)
+ 
+ df -h
+   (verify increase)
+   Before:
+     /dev/mapper/rhel-root   38G   18G   20G  50% /
+   After:
+ 	/dev/mapper/rhel-root   87G   18G   70G  21% /
+ 
+ 
+ Using fdisk (Create a new partition and mount it)
+ ------------
+ https://linuxconfig.org/how-fstab-works-introduction-to-the-etc-fstab-file-on-linux
+ sudo fdisk -l
+ locate the new disk in the list. (mine was Disk /dev/sdb: 50 GiB)
+ sudo fdisk /dev/sdb
+ Opens the disk with fdisk
+ Hit n for new partition
+ Hit p for primary
+ keep defaults on the next few questions
+ partition number 1
+ first sector 2084
+ last sector x bytes based on available gigs of space.
+ Type w to write the changes to disk
+ exit fdisk at this point.
+ 
+ fdisk -l to get the new disk info.
+ run
+ sudo mkfs -t ext4 /dev/
+ sudo mkdir -p /local/mount/point
+ sudo mount /dev/sdb1 /local/mount/point
+ 
+ add to fstab
+  lsblk -d -fs /dev/sdb1
+ NAME FSTYPE LABEL UUID                                 MOUNTPOINT
+ sdb1 ext4         c79caeea-2a1d-4f45-bd79-38d05cf8b551 /data
+ 
+ UUID=c79caeea-2a1d-4f45-bd79-38d05cf8b551 /data ext4    defaults   0      2
