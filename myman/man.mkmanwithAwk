@@ -1,0 +1,15 @@
+The problem:
+It is easy to get help for a specific command (vboxmanage help command). But hard to know which command was needed
+So I separated each vboxmanage command help into individual files with the following awk command.
+
+vboxmanage |awk '/^[[:blank:]]+VBoxManage [[:alnum:]]/ {print $1, "--help", $2, ">", $2".man"}' |awk '!seen[$0]++' |zsh
+The gyst:
+  vboxmanage outputs the full help page
+  awk pulls lines where the first word is VBoxManage preceded by one or more :blank: spaces followed by a space and another word character.
+  That will be the command part. i.e. VBoxManage list
+  Pass that list into awk "seen", a moniker for an array that strips out duplicate lines without sorting.
+  This is needed because several of the help sections contain several of the same command with slightly different options.
+    For example guestcontrol has 15 separate entries in the default help page: (VBoxManage |grep VBoxManage guestcontrol|wc)
+  Pipe that output to bash to perform the operation (writing the output of VBoxManage --help <command> to a file named after the command)
+  The command should be run in a folder where the output should go or written to output to that folder.
+  It will only be used once so I went with cding to the folder before running.
