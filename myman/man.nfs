@@ -1,0 +1,19 @@
+NFS:
+https://documentation.ubuntu.com/server/how-to/networking/install-nfs/
+sudo apt-get install nfs-kernel-server
+sudo systemctl start nfs-kernel-server.service
+sudo vi /etc/exports
+    /srv     <allowed hosts/ips>(ro,sync,subtree_check)
+    /home    *.hostname.com(rw,sync,no_subtree_check)
+    /scratch *(rw,async,no_subtree_check,no_root_squash)
+sudo exportfs -a
+
+clients:
+sudo apt install nfs-common
+sudo mkdir /opt/example
+sudo mount -t nfs4 -o vers=4.0 hostname\ip:/srv /opt/example
+add line to /etc/fstab to persist
+
+
+
+
